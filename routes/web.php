@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShiftController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,17 +16,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('shifts.index');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::resource('shifts', ShiftController::class);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::get('/employees', [ShiftController::class, 'employees'])->name('employees');
+Route::get('/employees/{name}', [ShiftController::class, 'details'])->name('employee.details');
+
+Route::get('/import', [ShiftController::class, 'importForm'])->name('import.form');
+Route::post('/import', [ShiftController::class, 'import'])->name('import');
+
 
 require __DIR__.'/auth.php';
