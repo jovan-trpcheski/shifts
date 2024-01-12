@@ -89,7 +89,7 @@ class ShiftController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'csv_file' => 'required|mimes:csv,txt',
+            'csv_file' => 'required|mimes:csv',
         ]);
 
         Excel::import(new ShiftsImport, request()->file('csv_file'));
